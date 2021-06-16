@@ -32,7 +32,7 @@
 
 I am developping a simple doodling tool, to learn to play with the canvas API.
 It will probably keep evolving in the next weeks/months.
-Why not add the possibility to download your artwork? Or create a multiplayer game based on Websocket? 😼
+Why not add the possibility to download your artwork? Adapt the tool to tablets and mobile? Or create a multiplayer game based on Websocket? 😼
 
 ### Built With
 

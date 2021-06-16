@@ -1,36 +1,23 @@
 import React from 'react';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import PropTypes from 'prop-types';
 import eraser from 'src/assets/eraser.png';
+import deleteIcon from 'src/assets/delete.png';
+import colorOptions from 'src/data/colorOptions';
+import thicknessOptions from 'src/data/thicknessOptions';
 import title from '../../assets/doodler.png';
 import Radio from '../Radio';
-import styles from './styles.scss';
+import './styles.scss';
 
 const Header = ({
   updateColor,
   updateThickness,
   selectedColor,
   selectedThickness,
-  clearCanvas,
+  setClearCanvas,
 }) => {
-  const colorOptions = [
-    { text: 'Noir', value: 'black' },
-    { text: 'Violet', value: 'purple' },
-    { text: 'Bleu', value: 'blue' },
-    { text: 'Vert', value: 'green' },
-    { text: 'Jaune', value: 'yellow' },
-    { text: 'Orange', value: 'orange' },
-    { text: 'Rouge', value: 'red' },
-  ];
-
-  const thicknessOptions = [
-    { text: 'Très fin', value: 'very-thin' },
-    { text: 'Fin', value: 'thin' },
-    { text: 'Moyen', value: 'average' },
-    { text: 'Gros', value: 'thick' },
-    { text: 'Très gros', value: 'very-thick' },
-  ];
-
+  // when clicking on the eraser picture
+  // the selectedColor is set to white
+  // (canvas background has been set to white as well)
   const erase = () => {
     const name = 'color';
     const value = 'white';
@@ -45,7 +32,9 @@ const Header = ({
         src={title}
       />
       <div className="header__toolbar">
-        <section className="toolbar__palette">
+        <section
+          className="toolbar__palette"
+        >
           {colorOptions.map((choice) => (
             <Radio
                 // important to give selected value in prop
@@ -65,15 +54,12 @@ const Header = ({
         <section className="toolbar__stroke">
           {thicknessOptions.map((choice) => (
             <Radio
-              // important to give selected value in prop
-              // so we can dynamically give the right radio button the checked property
               selectedthickness={selectedThickness}
               label={choice.text}
               type="radio"
               name="thickness"
               value={choice.value}
               key={choice.value}
-              // checks if this particular options' value === the value that was sent to the state
               checked={selectedThickness === choice.value}
               onChange={updateThickness}
             />
@@ -96,9 +82,15 @@ const Header = ({
           <button
             type="button"
             className="clear__button"
-            onClick={clearCanvas}
+            onClick={() => {
+              setClearCanvas(true);
+            }}
           >
-            <RiDeleteBin5Line className="clear__icon" />
+            <img
+              className="clear__icon"
+              src={deleteIcon}
+              alt="supprimer"
+            />
           </button>
         </section>
       </div>
@@ -109,14 +101,9 @@ const Header = ({
 Header.propTypes = {
   updateColor: PropTypes.func.isRequired,
   updateThickness: PropTypes.func.isRequired,
-  clearCanvas: PropTypes.func.isRequired,
-  selectedColor: PropTypes.string,
-  selectedThickness: PropTypes.string,
-};
-
-Header.defaultProps = {
-  selectedColor: 'black',
-  selectedThickness: 'average',
+  setClearCanvas: PropTypes.func.isRequired,
+  selectedColor: PropTypes.string.isRequired,
+  selectedThickness: PropTypes.string.isRequired,
 };
 
 export default Header;

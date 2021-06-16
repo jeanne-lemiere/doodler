@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Header from 'src/components/Header';
-import { colorChange, thicknessChange } from 'src/actions';
+import { colorChange, thicknessChange, setClearCanvas } from 'src/actions';
 
 const mapState = (state) => {
   const {
@@ -28,8 +28,9 @@ const mapDispatch = (dispatch) => ({
     const action = thicknessChange(data);
     dispatch(action);
   },
-  clearCanvas: () => {
-    // here we will apply context.clearRect() in order to start over
+  setClearCanvas: (bool) => {
+    const action = setClearCanvas(bool);
+    dispatch(action);
   },
 });
 

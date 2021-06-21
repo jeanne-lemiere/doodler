@@ -14,6 +14,9 @@ const Canvas = ({
   setIsDrawing,
   clearCanvas,
   setClearCanvas,
+  width,
+  height,
+  resizeCanvas,
 }) => {
   // here we compare the color and thickness values received from the state
   // to the existing arrays of options, so we can access the exact HEX or px value
@@ -34,7 +37,8 @@ const Canvas = ({
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
-  // the first useLayoutEffect configures the canvas with fixed values
+  // the first useLayoutEffect configures the canvas height and width (dynamically)
+  // and sets the context
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = window.innerWidth * 2;
@@ -48,7 +52,17 @@ const Canvas = ({
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
     contextRef.current = context;
-  }, []);
+
+    const handleResize = () => {
+      resizeCanvas(window.innerHeight, window.innerWidth);
+    };
+
+    // we listen to resize event
+    window.addEventListener('resize', handleResize);
+
+    // and clean up after ourselves
+    return () => window.removeEventListener('resize', handleResize);
+  }, [width, height]);
 
   // the second hook here updates the canvas settings
   // as color and thickness values change
@@ -99,9 +113,6 @@ const Canvas = ({
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
   };
-
-  // a resize function has yet to be implemented so the canvas doesn't break on resize
-  // or when the console is open
 
   return (
     <canvas

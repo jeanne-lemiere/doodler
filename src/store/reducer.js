@@ -3,6 +3,7 @@ import {
   THICKNESS_CHANGE,
   SET_IS_DRAWING,
   SET_CLEAR_CANVAS,
+  RESIZE_CANVAS,
 } from '../actions';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   isDrawing: false,
   canvas: {},
   clearCanvas: false,
+  viewport: {},
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -34,6 +36,11 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         clearCanvas: action.payload,
+      };
+    case RESIZE_CANVAS:
+      return {
+        ...state,
+        viewport: action.payload,
       };
     default:
       return state;

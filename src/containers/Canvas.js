@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Canvas from 'src/components/Canvas';
-import { setIsDrawing, setClearCanvas } from '../actions';
+import { setIsDrawing, setClearCanvas, resizeCanvas } from '../actions';
 
 const mapState = (state) => {
   const {
@@ -22,6 +22,11 @@ const mapDispatch = (dispatch) => ({
   },
   setClearCanvas: (bool) => {
     const action = setClearCanvas(bool);
+    dispatch(action);
+  },
+  resizeCanvas: (height, width) => {
+    const viewport = { height, width };
+    const action = resizeCanvas(viewport);
     dispatch(action);
   },
 });

@@ -37,7 +37,7 @@ const Canvas = ({
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
-  // the first useLayoutEffect configures the canvas height and width (dynamically)
+  // the first useLayoutEffect configures the canvas height and width
   // and sets the context
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -46,37 +46,50 @@ const Canvas = ({
     canvas.style.width = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
 
-    const context = canvas.getContext('2d');
+    // the alpha property indicates there won't be any transparent pixel in the canvas
+    // therefore it enhances drawing performances
+    const context = canvas.getContext('2d', { alpha: false });
     context.scale(2, 2);
     context.lineCap = 'round';
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
     contextRef.current = context;
+  }, []);
 
-    const handleResize = () => {
-      resizeCanvas(window.innerHeight, window.innerWidth);
-    };
-
-    // we listen to resize event
-    window.addEventListener('resize', handleResize);
-
-    // and clean up after ourselves
-    return () => window.removeEventListener('resize', handleResize);
-  }, [width, height]);
-
-  // the second hook here updates the canvas settings
+  // the second hook here updates the context settings
   // as color and thickness values change
   useEffect(() => {
-    const context = canvasRef.current.getContext('2d');
+    const context = canvasRef.current.getContext('2d', { alpha: false });
     context.strokeStyle = currentColor.hexValue;
     context.lineWidth = currentThickness.width;
 
     // it also clears the canvas whenever the user presses the X button in Header
     if (clearCanvas) {
       context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       setClearCanvas(false);
     }
   }, [selectedThickness, selectedColor, clearCanvas]);
+
+  /*  useEffect(() => {
+    const handleResize = () => {
+      // updates viewport height and width in the state
+      resizeCanvas(window.innerHeight, window.innerWidth);
+      // updates the canvas height and width
+      const canvas = canvasRef.current;
+      canvas.width = window.innerWidth * 2;
+      canvas.height = window.innerHeight * 2;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      // here find a way to redraw the canvas after resize
+    };
+    // trigger the function on resize
+    window.onresize = handleResize;
+
+    // and clean up after ourselves
+    return () => window.removeEventListener('resize', handleResize);
+  }, [height, width]); */
 
   const startDrawing = ({ nativeEvent }) => {
     // the function only responds to left click
@@ -84,10 +97,6 @@ const Canvas = ({
       return;
     }
 
-    // here we keep track of the mouse's coordonates and begin a new path
-    // this is the simplest and most readable way to do it
-    // but I find the stroke quite laggy and would like to make it smoother
-    // (need to do some more research on this first)
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
@@ -132,6 +141,14 @@ Canvas.propTypes = {
   setIsDrawing: PropTypes.func.isRequired,
   clearCanvas: PropTypes.bool.isRequired,
   setClearCanvas: PropTypes.func.isRequired,
+  resizeCanvas: PropTypes.func.isRequired,
+  height: PropTypes.number,
+  width: PropTypes.number,
+};
+
+Canvas.defaultProps = {
+  height: window.innerHeight,
+  width: window.innerWidth,
 };
 
 export default Canvas;

@@ -4,6 +4,7 @@ import {
   SET_IS_DRAWING,
   SET_CLEAR_CANVAS,
   RESIZE_CANVAS,
+  SET_TOOLBAR,
 } from '../actions';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   canvas: {},
   clearCanvas: false,
   viewport: {},
+  toolbar: false,
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -41,6 +43,11 @@ const reducer = (state = initialState, action = {}) => {
       return {
         ...state,
         viewport: action.payload,
+      };
+    case SET_TOOLBAR:
+      return {
+        ...state,
+        toolbar: action.payload,
       };
     default:
       return state;

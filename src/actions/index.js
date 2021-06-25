@@ -3,6 +3,7 @@ export const THICKNESS_CHANGE = 'THICKNESS_CHANGE';
 export const SET_IS_DRAWING = 'SET_IS_DRAWING';
 export const SET_CLEAR_CANVAS = 'SET_CLEAR_CANVAS';
 export const RESIZE_CANVAS = 'RESIZE_CANVAS';
+export const SET_TOOLBAR = 'SET_TOOLBAR';
 
 export const colorChange = (payload) => ({
   type: COLOR_CHANGE,
@@ -26,5 +27,10 @@ export const setClearCanvas = (payload) => ({
 
 export const resizeCanvas = (payload) => ({
   type: RESIZE_CANVAS,
+  payload,
+});
+
+export const setToolbar = (payload) => ({
+  type: SET_TOOLBAR,
   payload,
 });

@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import Header from 'src/components/Header';
-import { colorChange, thicknessChange, setClearCanvas } from 'src/actions';
+import {
+  colorChange, thicknessChange, setClearCanvas, setToolbar,
+} from 'src/actions';
 
 const mapState = (state) => {
   const {
@@ -30,6 +32,10 @@ const mapDispatch = (dispatch) => ({
   },
   setClearCanvas: (bool) => {
     const action = setClearCanvas(bool);
+    dispatch(action);
+  },
+  setToolbar: (bool) => {
+    const action = setToolbar(bool);
     dispatch(action);
   },
 });

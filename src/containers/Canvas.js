@@ -7,11 +7,17 @@ const mapState = (state) => {
     color, thickness, isDrawing, clearCanvas,
   } = state;
 
+  const {
+    height, width,
+  } = state.viewport;
+
   return {
     selectedColor: color,
     selectedThickness: thickness,
     isDrawing,
     clearCanvas,
+    height,
+    width,
   };
 };
 

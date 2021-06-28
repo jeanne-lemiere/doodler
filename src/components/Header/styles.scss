@@ -3,21 +3,38 @@
   border: 3px solid black;
   background-color: #ffffff;
   justify-content: space-between;
-  height: 90px;
-  width: 100vw;
+  height: 4.7rem;
   position: fixed;
   top: 0;
   left: 0;
-  &__title {
-    height: 50px;
+  right: 0;
+
+  // prevents the toolbar elements from being selected 
+  // and highlighted accidentally while drawing
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &__title{
+    height: 3rem;
     width: auto;
     margin: auto 1rem;
+    &--mobile {
+      display: none;
+    }
   }
   &__toolbar {
     display: flex;
     width: auto;
     justify-content: space-between;
   }
+}
+
+.mobile-toolbar__button {
+    display: none;
 }
 
 .toolbar__palette {
@@ -30,25 +47,81 @@
   display: flex;
 }
 
-.clear__button, .erase__button {
+.clear__button, .erase__button, .mobile-toolbar__button {
   background: none;
   border: none;
   height: 100%;
-  width: 90px;
+  width: 4.7rem;
   padding: 0;
   border-left: 3px solid black;
 }
 
 .clear__icon, .erase__icon {
-  height: 70%;
-  width: auto;
+  width: 100%;
+  height: auto;
   display: block;
   margin: auto;
 }
 
 .clear__icon {
-  height: 60%;
+  width: 60%;
 }
 .erase__icon:hover {
   transform: rotate(15deg); 
+}
+
+  @media only screen and (max-width: 1300px) {
+  .header__title {
+height: 2.4rem;
+  }
+  .erase__icon {
+  width: 90%;
+}
+.clear__icon {
+  width: 55%;
+}
+}
+
+
+  @media only screen and (max-width: 1024px) {
+ .header__title {
+display: none;
+&--mobile {
+  display: block;
+  height: 2.4rem;
+    width: auto;
+    margin: auto 1rem;
+}
+  }
+    .header {
+      height: 4.3rem;
+      &__title {
+height: 2rem;
+  }
+}
+.erase__icon {
+  width: 80%;
+}
+.clear__icon {
+  width: 50%;
+}
+.clear__button, .erase__button, .mobile-toolbar__button {
+  width: 4.3rem;
+}
+}
+
+  @media only screen and (max-width: 800px) {
+.toolbar__palette, .toolbar__stroke {
+  display: none;
+}
+
+.mobile-toolbar__button {
+  display: block;
+  border-left: 3px solid black;
+}
+.mobile-toolbar__icon {
+  height: auto;
+  width: 70%;
+  margin: 0.5rem;
+}
 }

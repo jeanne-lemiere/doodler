@@ -1,19 +1,24 @@
+// import: NPM
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// import: icons and images
 import eraser from 'src/assets/eraser.png';
 import deleteIcon from 'src/assets/delete.png';
-import colorOptions from 'src/data/colorOptions';
-import thicknessOptions from 'src/data/thicknessOptions';
 import title from '../../assets/doodler.png';
-import Radio from '../Radio';
+import titleMobile from '../../assets/doodler-mobile.png';
+import toolbar from '../../assets/palette.png';
+
+// import: other components & stylesheet
+import Modal from '../../containers/Modal';
+import ColorToolbar from '../../containers/ColorToolbar';
+import StrokeToolbar from '../../containers/StrokeToolbar';
 import './styles.scss';
 
 const Header = ({
   updateColor,
-  updateThickness,
-  selectedColor,
-  selectedThickness,
   setClearCanvas,
+  setToolbar,
 }) => {
   // when clicking on the eraser picture
   // the selectedColor is set to white
@@ -25,85 +30,81 @@ const Header = ({
   };
 
   return (
-    <header className="header">
-      <img
-        className="header__title"
-        alt="Doodler"
-        src={title}
-      />
-      <div className="header__toolbar">
-        <section
-          className="toolbar__palette"
-        >
-          {colorOptions.map((choice) => (
-            <Radio
-                // important to give selected value in prop
-                // so we can dynamically give the right radio button the checked property
-              selectedcolor={selectedColor}
-              label={choice.text}
-              type="radio"
-              name="color"
-              value={choice.value}
-              key={choice.value}
-                // checks if this particular options' value === the value that was sent to the state
-              checked={selectedColor === choice.value}
-              onChange={updateColor}
-            />
-          ))}
-        </section>
-        <section className="toolbar__stroke">
-          {thicknessOptions.map((choice) => (
-            <Radio
-              selectedthickness={selectedThickness}
-              label={choice.text}
-              type="radio"
-              name="thickness"
-              value={choice.value}
-              key={choice.value}
-              checked={selectedThickness === choice.value}
-              onChange={updateThickness}
-            />
-          ))}
-        </section>
-        <section className="toolbar__erase">
-          <button
-            type="button"
-            className="erase__button"
-            onClick={erase}
+    <div>
+      <header className="header">
+        <img
+          className="header__title"
+          alt="Doodler"
+          src={title}
+        />
+        <img
+          className="header__title--mobile"
+          alt="Doodler"
+          src={titleMobile}
+        />
+        <div className="header__toolbar">
+          <section className="toolbar__mobile-toolbar">
+            <button
+              type="button"
+              className="mobile-toolbar__button"
+              onClick={() => {
+                setToolbar(true);
+              }}
+            >
+              <img
+                className="mobile-toolbar__icon"
+                alt="toolbar"
+                src={toolbar}
+              />
+            </button>
+          </section>
+          <section
+            className="toolbar__palette"
           >
-            <img
-              className="erase__icon"
-              src={eraser}
-              alt="gomme"
-            />
-          </button>
-        </section>
-        <section className="toolbar__clear">
-          <button
-            type="button"
-            className="clear__button"
-            onClick={() => {
-              setClearCanvas(true);
-            }}
-          >
-            <img
-              className="clear__icon"
-              src={deleteIcon}
-              alt="supprimer"
-            />
-          </button>
-        </section>
-      </div>
-    </header>
+            <ColorToolbar />
+          </section>
+          <section className="toolbar__stroke">
+            <StrokeToolbar />
+          </section>
+          <section className="toolbar__erase">
+            <button
+              type="button"
+              className="erase__button"
+              onClick={erase}
+            >
+              <img
+                className="erase__icon"
+                src={eraser}
+                alt="gomme"
+              />
+            </button>
+          </section>
+          <section className="toolbar__clear">
+            <button
+              type="button"
+              className="clear__button"
+              onClick={() => {
+                setClearCanvas(true);
+              }}
+            >
+              <img
+                className="clear__icon"
+                src={deleteIcon}
+                alt="supprimer"
+              />
+            </button>
+          </section>
+        </div>
+      </header>
+      <Modal />
+    </div>
   );
 };
 
 Header.propTypes = {
   updateColor: PropTypes.func.isRequired,
-  updateThickness: PropTypes.func.isRequired,
   setClearCanvas: PropTypes.func.isRequired,
-  selectedColor: PropTypes.string.isRequired,
-  selectedThickness: PropTypes.string.isRequired,
+  setToolbar: PropTypes.func.isRequired,
 };
 
 export default Header;

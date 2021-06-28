@@ -1,5 +1,6 @@
 .drawing-canvas {
 cursor: url("src/assets/brush-cursor-24px.png"), default;
+touch-action: none;
 &--eraser {
   cursor: url("src/assets/eraser-cursor-24px.png"), default;
 }

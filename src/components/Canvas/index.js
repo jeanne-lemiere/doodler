@@ -51,6 +51,7 @@ const Canvas = ({
     const context = canvas.getContext('2d', { alpha: false });
     context.scale(2, 2);
     context.lineCap = 'round';
+    context.lineJoin = 'round';
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
     contextRef.current = context;
@@ -92,15 +93,18 @@ const Canvas = ({
   }, [height, width]); */
 
   const startDrawing = ({ nativeEvent }) => {
-    // the function only responds to left click
-    if (nativeEvent.button !== 0) {
+    // when using a mouse, drawing action only responds to left click
+    if (nativeEvent.button && nativeEvent.button !== 0) {
       return;
     }
-
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
+    contextRef.current.beginPath();
+
+    const coordonates = nativeEvent.touches
+      ? { x: nativeEvent.touches[0].clientX, y: nativeEvent.touches[0].clientY }
+      : { x: nativeEvent.clientX, y: nativeEvent.clientY };
+
+    contextRef.current.moveTo(coordonates.x, coordonates.y);
   };
 
   const stopDrawing = ({ nativeEvent }) => {
@@ -116,18 +120,26 @@ const Canvas = ({
     if (!isDrawing) {
       return;
     }
+    const coordonates = nativeEvent.touches
+      ? { x: nativeEvent.touches[0].clientX, y: nativeEvent.touches[0].clientY }
+      : { x: nativeEvent.clientX, y: nativeEvent.clientY };
 
-    const { offsetX, offsetY } = nativeEvent;
-    // those two lines actually create the visible stroke
-    contextRef.current.lineTo(offsetX, offsetY);
+    contextRef.current.lineTo(coordonates.x, coordonates.y);
     contextRef.current.stroke();
   };
 
   return (
     <canvas
+      // mouse events
       onMouseDown={startDrawing}
       onMouseUp={stopDrawing}
       onMouseMove={draw}
+      onMouseOut={stopDrawing}
+      // touch events
+      onTouchStart={startDrawing}
+      onTouchEnd={stopDrawing}
+      onTouchMove={draw}
+      // refs
       ref={canvasRef}
       className={canvasClass}
     />
